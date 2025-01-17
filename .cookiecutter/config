@@ -1,0 +1,5 @@
+# Change these at your peril:
+export PROJECT_NAME=asf_mission_data_tool
+export REPO_NAME=asf_mission_data_tool
+export DESCRIPTION=Simple pipelines for data that is important to Nesta's Sustainable Future mission.
+export PROJECT_OPENNESS=public

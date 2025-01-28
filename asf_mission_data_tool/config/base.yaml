@@ -1,0 +1,165 @@
+dataset:
+  energy_consumption_in_the_uk:
+    collection_url: https://www.gov.uk/government/collections/energy-consumption-in-the-uk
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/energy_consumption_in_the_uk/ECUK_2024_Consumption_tables.xlsx
+          - s3://asf-mission-data-tool/bronze/energy_consumption_in_the_uk/ECUK_2024_Intensity_tables.xlsx
+          - s3://asf-mission-data-tool/bronze/energy_consumption_in_the_uk/ECUK_2024_Primary_Energy_tables.xlsx
+          - s3://asf-mission-data-tool/bronze/energy_consumption_in_the_uk/ECUK_2024_End_Use_tables.xlsx
+          - s3://asf-mission-data-tool/bronze/energy_consumption_in_the_uk/ECUK_2024_Electrical_Products_tables.xlsx
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/66f132604f35b65bf4cffe98/ECUK_2024_Consumption_tables.xlsx
+          - https://assets.publishing.service.gov.uk/media/66f1327d02970476b261ab04/ECUK_2024_Intensity_tables.xlsx
+          - https://assets.publishing.service.gov.uk/media/66f1329802970476b261ab05/ECUK_2024_Primary_Energy_tables.xlsx
+          - https://assets.publishing.service.gov.uk/media/66f132b1b4d70bfba161ab06/ECUK_2024_End_Use_tables.xlsx
+          - https://assets.publishing.service.gov.uk/media/66f132cec9bf1d4e84379f94/ECUK_2024_Electrical_Products_tables.xlsx
+        page_url: https://www.gov.uk/government/statistics/energy-consumption-in-the-uk-2024
+        release_date: "2024-09-26"
+  energy_performance_of_buildings_certificates:
+    collection_url: https://www.gov.uk/government/collections/energy-performance-of-buildings-certificates
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/energy_performance_of_buildings_certificates/A1-_All_Properties.ods
+          - s3://asf-mission-data-tool/bronze/energy_performance_of_buildings_certificates/D1-_Domestic_Properties.ods
+          - s3://asf-mission-data-tool/bronze/energy_performance_of_buildings_certificates/D2-_Domestic_Properties.ods
+          - s3://asf-mission-data-tool/bronze/energy_performance_of_buildings_certificates/D3-_Domestic_Properties.ods
+          - s3://asf-mission-data-tool/bronze/energy_performance_of_buildings_certificates/D4A-_Domestic_Properties.ods
+          - s3://asf-mission-data-tool/bronze/energy_performance_of_buildings_certificates/D4B-_Domestic_Properties.ods
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/6717644696def6d27a4c9b6e/A1-_All_Properties.ods
+          - https://assets.publishing.service.gov.uk/media/67176490720eec5582849bad/D1-_Domestic_Properties.ods
+          - https://assets.publishing.service.gov.uk/media/671765a99242eecc6c849bb4/D2-_Domestic_Properties.ods
+          - https://assets.publishing.service.gov.uk/media/671765924a6b12291ed99875/D3-_Domestic_Properties.ods
+          - https://assets.publishing.service.gov.uk/media/671765c4583ef2380ad99880/D4A-_Domestic_Properties.ods
+          - https://assets.publishing.service.gov.uk/media/67176653d100972c0f4c9b64/D4B-_Domestic_Properties.ods
+        page_url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-energy-performance-of-buildings-certificates
+        release_date: "2024-10-24"
+  energy_price_cap_levels:
+    collection_url: https://www.ofgem.gov.uk/energy-policy-and-regulation/policy-and-regulatory-programmes/energy-price-cap-default-tariff-policy/energy-price-cap-default-tariff-levels
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/energy_price_cap_levels/Annex_9_-_Levelisation_allowance_methodology_and_levelised_cap_levels_v1.4.xlsx
+        file_url:
+          - https://www.ofgem.gov.uk/sites/default/files/2024-11/Annex_9_-_Levelisation_allowance_methodology_and_levelised_cap_levels_v1.4.xlsx
+        page_url: https://www.ofgem.gov.uk/energy-policy-and-regulation/policy-and-regulatory-programmes/energy-price-cap-default-tariff-policy/energy-price-cap-default-tariff-levels
+        release_date: "2024-11-22"
+  fuel_poverty_statistics:
+    collection_url: https://www.gov.uk/government/collections/fuel-poverty-statistics
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/fuel_poverty_statistics/2023-fuel-poverty-detailed-tables-xls.xlsx
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/65cca543130549000c8679b9/2023-fuel-poverty-detailed-tables-xls.xlsx
+        page_url: https://www.gov.uk/government/statistics/fuel-poverty-detailed-tables-2024-2023-data
+        release_date: "2024-02-15"
+  future_energy_scenarios:
+    collection_url: https://www.neso.energy/publications/future-energy-scenarios-fes
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/future_energy_scenarios/Future Energy Scenarios
+            2024 Data Workbook_V003.xlsx
+        file_url:
+          - https://www.neso.energy/fes-data-workbook-2024
+        page_url: https://www.neso.energy/publications/future-energy-scenarios-fes
+        release_date: "2024-07-15"
+  heat_pump_deployment_quarterly_statistics:
+    collection_url: https://www.gov.uk/government/collections/heat-pump-deployment-statistics
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/heat_pump_deployment_quarterly_statistics/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q3.xlsx
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/674ddaf51916486d54daf085/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q3.xlsx
+        page_url: https://www.gov.uk/government/statistics/heat-pump-deployment-statistics-september-2024
+        release_date: "2024-12-05"
+      - file_url: https://assets.publishing.service.gov.uk/media/66f53fee080bdf716392e93f/Heat_pump_deployment_quarterly_statistics_United_Kingdom_June_2024.xlsx
+        page_url: https://www.gov.uk/government/statistics/heat-pump-deployment-statistics-june-2024
+        release_date: "2024-09-26"
+  northern_ireland_statistics_and_research_agency_census:
+    collection_url: https://www.nisra.gov.uk/statistics/census
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/northern_ireland_statistics_and_research_agency_census/census-2021-commissioned-table-ct0082.xlsx
+        file_url:
+          - https://www.nisra.gov.uk/system/files/statistics/census-2021-commissioned-table-ct0082.xlsx
+        page_url: https://www.nisra.gov.uk/publications/census-2021-commissioned-table-ct0082
+        release_date: "2024-02-12"
+  public_attitudes_tracking_survey:
+    collection_url: https://www.gov.uk/government/collections/public-attitudes-tracking-survey
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT_Summer_2024_Time_Series.xlsx
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT_Summer_2024_Crosstabulations.xlsx
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/671a182f593bb124be9c13dc/DESNZ_PAT_Summer_2024_Time_Series.xlsx
+          - https://assets.publishing.service.gov.uk/media/671a181a593bb124be9c13db/DESNZ_PAT_Summer_2024_Crosstabulations.xlsx
+        page_url: https://www.gov.uk/government/statistics/desnz-public-attitudes-tracker-summer-2024
+        release_date: "2024-10-29"
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT_Spring_2024_Time_series.xlsx
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT__Spring_2024__Crosstabulations.xlsx
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/6682749697ea0c79abfe4dc0/DESNZ_PAT_Spring_2024_Time_series.xlsx
+          - https://assets.publishing.service.gov.uk/media/668274ab7d26b2be17a4b4c1/DESNZ_PAT__Spring_2024__Crosstabulations.xlsx
+        page_url: https://www.gov.uk/government/statistics/desnz-public-attitudes-tracker-spring-2024
+        release_date: "2024-07-03"
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker_Winter_2023_Time_Series.xlsx
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker_Winter_2023_Crosstabulations__Revised_July_2024_.xlsx
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/65e88e6062ff48001a87b2b2/DESNZ_Public_Attitudes_Tracker_Winter_2023_Time_Series.xlsx
+          - https://assets.publishing.service.gov.uk/media/66829a4e7d26b2be17a4b4f2/DESNZ_Public_Attitudes_Tracker_Winter_2023_Crosstabulations__Revised_July_2024_.xlsx
+        page_url: https://www.gov.uk/government/statistics/desnz-public-attitudes-tracker-winter-2023
+        release_date: "2024-03-07"
+  scottish_house_condition_survey:
+    collection_url: https://www.gov.scot/collections/scottish-house-condition-survey/
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/scottish_house_condition_survey/SHCS%2B2023-%2BChapter%2B01%2BKey%2BAttributes%2Bof%2Bthe%2BScottish%2BHousing%2BStock%2B%25E2%2580%2593%2Btables%2Band%2Bfigures.ods
+          - s3://asf-mission-data-tool/bronze/scottish_house_condition_survey/SHCS%2B2023-%2BChapter%2B02%2BEnergy%2BEfficiency-%2Btables%2Band%2Bfigures.ods
+          - s3://asf-mission-data-tool/bronze/scottish_house_condition_survey/SHCS%2B2023-%2BChapter%2B03%2BFuel%2BPoverty-%2Btables%2Band%2Bfigures.ods
+          - s3://asf-mission-data-tool/bronze/scottish_house_condition_survey/SHCS%2B2023-%2BChapter%2B04%2BEnergy%2BPerceptions-%2Btables%2Band%2Bfigures.ods
+          - s3://asf-mission-data-tool/bronze/scottish_house_condition_survey/SHCS%2B2023-%2BChapter%2B05%2BHousing%2BConditions%2B-%2Btables%2Band%2Bfigures.ods
+          - s3://asf-mission-data-tool/bronze/scottish_house_condition_survey/SHCS%2B2023-%2BChapter%2B06%2BBedroom%2BStandard-%2Btables%2Band%2Bfigures.ods
+        file_url:
+          - https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2025/01/scottish-house-condition-survey-2023-key-findings/documents/shcs-2023--chapter-01-key-attributes-of-the-scottish-housing-stock---tables-and-figures/shcs-2023--chapter-01-key-attributes-of-the-scottish-housing-stock---tables-and-figures/govscot%3Adocument/SHCS%2B2023-%2BChapter%2B01%2BKey%2BAttributes%2Bof%2Bthe%2BScottish%2BHousing%2BStock%2B%25E2%2580%2593%2Btables%2Band%2Bfigures.ods
+          - https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2025/01/scottish-house-condition-survey-2023-key-findings/documents/shcs-2023-chapter-02-energy-efficiency--tables-and-figures/shcs-2023-chapter-02-energy-efficiency--tables-and-figures/govscot%3Adocument/SHCS%2B2023-%2BChapter%2B02%2BEnergy%2BEfficiency-%2Btables%2Band%2Bfigures.ods
+          - https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2025/01/scottish-house-condition-survey-2023-key-findings/documents/shcs-2023--chapter-03-fuel-poverty--tables-and-figures/shcs-2023--chapter-03-fuel-poverty--tables-and-figures/govscot%3Adocument/SHCS%2B2023-%2BChapter%2B03%2BFuel%2BPoverty-%2Btables%2Band%2Bfigures.ods
+          - https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2025/01/scottish-house-condition-survey-2023-key-findings/documents/shcs-2023--chapter-04-energy-perceptions--tables-and-figures/shcs-2023--chapter-04-energy-perceptions--tables-and-figures/govscot%3Adocument/SHCS%2B2023-%2BChapter%2B04%2BEnergy%2BPerceptions-%2Btables%2Band%2Bfigures.ods
+          - https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2025/01/scottish-house-condition-survey-2023-key-findings/documents/shcs-2023--chapter-05-housing-conditions---tables-and-figures/shcs-2023--chapter-05-housing-conditions---tables-and-figures/govscot%3Adocument/SHCS%2B2023-%2BChapter%2B05%2BHousing%2BConditions%2B-%2Btables%2Band%2Bfigures.ods
+          - https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2025/01/scottish-house-condition-survey-2023-key-findings/documents/shcs-2023--chapter-06-bedroom-standard--tables-and-figures/shcs-2023--chapter-06-bedroom-standard--tables-and-figures/govscot%3Adocument/SHCS%2B2023-%2BChapter%2B06%2BBedroom%2BStandard-%2Btables%2Band%2Bfigures.ods
+        page_url: https://www.gov.scot/publications/scottish-house-condition-survey-2023-key-findings/documents/
+        release_date: "2025-01-28"
+  sixth_carbon_budget:
+    collection_url: https://www.theccc.org.uk/publication/sixth-carbon-budget/
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/sixth_carbon_budget/The-Sixth-Carbon-Budget-Dataset_v2.xlsx
+        file_url:
+          - https://www.theccc.org.uk/wp-content/uploads/2020/12/The-Sixth-Carbon-Budget-Dataset_v2.xlsx
+        page_url: https://www.theccc.org.uk/publication/sixth-carbon-budget/#supporting-information-charts-and-data
+        release_date: "2020-12-09"
+  uk_territorial_greenhouse_gas_emissions_statistics:
+    collection_url: https://www.gov.uk/government/collections/uk-territorial-greenhouse-gas-emissions-statistics
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/uk_territorial_greenhouse_gas_emissions_statistics/2023-provisional-emissions-data-tables.xlsx
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/660305b1c34a860011be75f2/2023-provisional-emissions-data-tables.xlsx
+        page_url: https://www.gov.uk/government/statistics/provisional-uk-greenhouse-gas-emissions-national-statistics-2023
+        release_date: "2024-03-28"
+      - file_url:
+          - https://assets.publishing.service.gov.uk/media/65ff114a65ca2ffef17da7a6/final-greenhouse-gas-emissions-tables-2022.xlsx
+          - https://assets.publishing.service.gov.uk/media/66044b8cf9ab410011eea42d/final-greenhouse-gas-emissions-end-user-tables-2022.xlsx
+          - https://assets.publishing.service.gov.uk/media/667bec4297ea0c79abfe4c72/sic-final-greenhouse-gas-emissions-tables-2022.xlsx
+        page_url: https://www.gov.uk/government/statistics/final-uk-greenhouse-gas-emissions-national-statistics-1990-to-2022
+        release_date: "2024-02-06"
+  welsh_housing_conditions_survey:
+    collection_url: https://www.gov.wales/welsh-housing-conditions-survey
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/welsh_housing_conditions_survey/welsh-housing-conditions-survey-results-viewer-2017-18-en.ods
+        file_url:
+          - https://www.gov.wales/sites/default/files/statistics-and-research/2019-11/welsh-housing-conditions-survey-results-viewer-2017-18-en.ods
+        page_url: https://www.gov.wales/welsh-housing-conditions-survey-results-viewer
+        release_date: "2018-12-20"

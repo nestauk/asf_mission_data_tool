@@ -228,6 +228,8 @@ def get_latest_version(dataset_name: str, filter: Optional[str] = None) -> Dict:
         Dictionary with key-value pairs for dataset release date, file url and page url.
     """
     versions = config.get("dataset").get(dataset_name).get("versions")
+    if not versions:
+        raise ValueError(f"No versions found for dataset '{dataset_name}'.")
 
     if filter:
         filtered_versions = [
@@ -235,6 +237,8 @@ def get_latest_version(dataset_name: str, filter: Optional[str] = None) -> Dict:
             for version in versions
             if any(filter in url for url in version["file_url"])
         ]
+        if not filtered_versions:
+            raise ValueError(f"No versions found matching filter '{filter}'.")
         latest_version = max(
             filtered_versions,
             key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d"),
@@ -251,20 +255,47 @@ def append_file_bronze_to_latest_version(
     s3_file_path: str,
     filter: Optional[str] = None,
 ) -> None:
+    """Updates the base.yaml configuration file by appending a "file_bronze" field to the latest version entry of a specified dataset.
+    The function reads the dataset details from an existing config file, determines the latest version based on the release date and
+    updates the entry with the provided S3 file path.
 
-    # Load existing config data
-    with open("asf_mission_data_tool/config/base.yaml", "r") as file:
-        all_existing_data = yaml.safe_load(file)
+    Parameters
+    ----------
+    dataset_name : str
+        Name of dataset; must be a key of dataset in config/base.yaml.
+    s3_file_path : str
+        The S3 path of the bronze dataset file.
+    filter : Optional[str], optional
+        An optional filter to select specific dataset versions based on file URLs, by default None.
+    """
 
-    # Update data
+    try:
+        # Load existing config data
+        with open("asf_mission_data_tool/config/base.yaml", "r") as file:
+            all_existing_data = yaml.safe_load(file)
+    except FileNotFoundError:
+        raise FileNotFoundError("The configuration file 'base.yaml' was not found.")
+    except yaml.YAMLError:
+        raise ValueError("Error parsing YAML file. Please check its formatting.")
+
+    # Retrieve entry for dataset
     dataset_specific_data = all_existing_data.get("dataset", {}).get(dataset_name, {})
+    if not dataset_specific_data:
+        raise KeyError(f"Dataset '{dataset_name}' not found in config file.")
+
     versions = dataset_specific_data.get("versions", [])
+    if not versions:
+        raise ValueError(f"No versions found for dataset '{dataset_name}'.")
+
+    # Retrieve latest version of dataset
     if filter:
         filtered_versions = [
             version
             for version in versions
             if any(filter in url for url in version["file_url"])
         ]
+        if not filtered_versions:
+            raise ValueError(f"No versions found matching filter '{filter}'.")
         latest_version = max(
             filtered_versions,
             key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d"),
@@ -275,7 +306,7 @@ def append_file_bronze_to_latest_version(
         )
     latest_version["file_bronze"] = s3_file_path
 
-    # Write updated data to .yaml
+    # Write updated data
     with open("asf_mission_data_tool/config/base.yaml", "w") as file:
         yaml.dump(all_existing_data, file, default_flow_style=False, sort_keys=True)
 

@@ -130,6 +130,15 @@ dataset:
           - https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2025/01/scottish-house-condition-survey-2023-key-findings/documents/shcs-2023--chapter-06-bedroom-standard--tables-and-figures/shcs-2023--chapter-06-bedroom-standard--tables-and-figures/govscot%3Adocument/SHCS%2B2023-%2BChapter%2B06%2BBedroom%2BStandard-%2Btables%2Band%2Bfigures.ods
         page_url: https://www.gov.scot/publications/scottish-house-condition-survey-2023-key-findings/documents/
         release_date: "2025-01-28"
+  seventh_carbon_budget:
+    collection_url: https://www.theccc.org.uk/publication/the-seventh-carbon-budget/
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/seventh_carbon_budget/The-Seventh-Carbon-Budget-full-dataset.xlsx
+        file_url:
+          - https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-full-dataset.xlsx
+        page_url: https://www.theccc.org.uk/publication/the-seventh-carbon-budget/#publication-downloads
+        release_date: "2025-02-26"
   sixth_carbon_budget:
     collection_url: https://www.theccc.org.uk/publication/sixth-carbon-budget/
     versions:

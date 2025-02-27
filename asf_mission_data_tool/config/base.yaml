@@ -40,10 +40,38 @@ dataset:
     versions:
       - file_bronze:
           - s3://asf-mission-data-tool/bronze/energy_price_cap_levels/Annex_9_-_Levelisation_allowance_methodology_and_levelised_cap_levels_v1.4.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/energy_price_cap_levels/November_2024/Annex_9_-_Levelisation_allowance_methodology_and_levelised_cap_levels_v1.4_1c_Consumption_adjusted_levels.parquet
         file_url:
           - https://www.ofgem.gov.uk/sites/default/files/2024-11/Annex_9_-_Levelisation_allowance_methodology_and_levelised_cap_levels_v1.4.xlsx
         page_url: https://www.ofgem.gov.uk/energy-policy-and-regulation/policy-and-regulatory-programmes/energy-price-cap-default-tariff-policy/energy-price-cap-default-tariff-levels
         release_date: "2024-11-22"
+        tables:
+          - dtypes:
+              Consumption: str
+              Fuel: str
+              Payment method: str
+              Price cap period: str
+              Tariff component: str
+              value: float
+            sheet_name: 1c Consumption adjusted levels
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/energy_price_cap_levels/Annex-9-Levelisation-allowance-methodology-and-levelised-cap-levels-v1.5.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/energy_price_cap_levels/February_2025/Annex-9-Levelisation-allowance-methodology-and-levelised-cap-levels-v1.5_1c_Consumption_adjusted_levels.parquet
+        file_url:
+          - https://www.ofgem.gov.uk/sites/default/files/2025-02/Annex-9-Levelisation-allowance-methodology-and-levelised-cap-levels-v1.5.xlsx
+        page_url: https://www.ofgem.gov.uk/energy-policy-and-regulation/policy-and-regulatory-programmes/energy-price-cap-default-tariff-policy/energy-price-cap-default-tariff-levels
+        release_date: "2025-02-25"
+        tables:
+          - dtypes:
+              Consumption: str
+              Fuel: str
+              Payment method: str
+              Price cap period: str
+              Tariff component: str
+              value: float
+            sheet_name: 1c Consumption adjusted levels
   fuel_poverty_statistics:
     collection_url: https://www.gov.uk/government/collections/fuel-poverty-statistics
     versions:
@@ -58,7 +86,7 @@ dataset:
     versions:
       - file_bronze:
           - s3://asf-mission-data-tool/bronze/future_energy_scenarios/Future Energy Scenarios
-            2024 Data Workbook_V003.xlsx
+            2024 Data Workbook_V005.xlsx
         file_url:
           - https://www.neso.energy/fes-data-workbook-2024
         page_url: https://www.neso.energy/publications/future-energy-scenarios-fes
@@ -68,10 +96,55 @@ dataset:
     versions:
       - file_bronze:
           - s3://asf-mission-data-tool/bronze/heat_pump_deployment_quarterly_statistics/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q3.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/December_2024/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q3_Table_1_1.parquet
+          - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/December_2024/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q3_Table_1_2.parquet
+          - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/December_2024/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q3_Table_1_3.parquet
         file_url:
           - https://assets.publishing.service.gov.uk/media/674ddaf51916486d54daf085/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q3.xlsx
         page_url: https://www.gov.uk/government/statistics/heat-pump-deployment-statistics-september-2024
         release_date: "2024-12-05"
+        tables:
+          - dtypes:
+              All schemes: int
+              Boiler Upgrade Scheme[Note 5]: int
+              Domestic Renewable Heat Incentive[note 11]: int
+              Energy Company Obligation[Note 10]: int
+              Green Homes Grant Voucher Scheme[Note 8]: int
+              Home Upgrade Grant[Note 6]: int
+              Installation quarter [note 4]: str
+              Local Authority Delivery[note 7]: int
+              Non-Domestic Renewable Heat Incentive[Note 12]: int
+              Social Housing Decarbonisation Fund[Note 9]: int
+            sheet_name: Table 1.1
+            skiprows: 5
+          - dtypes:
+              Air source heat pumps [note 13]: int
+              All technologies: int
+              Ground/water source heat pumps [note 13]: int
+              Installation quarter [note 4]: str
+              Unknown technology [note 14]: int
+            sheet_name: Table 1.2
+            skiprows: 5
+          - dtypes:
+              East: int
+              East Midlands: int
+              England: int
+              England and Wales: int
+              Installation quarter [note 4]: str
+              London: int
+              North East: int
+              North West: int
+              Northern Ireland: int
+              Scotland: int
+              South East: int
+              South West: int
+              United Kingdom: int
+              Wales: int
+              West Midlands: int
+              Yorkshire and The Humber: int
+            sheet_name: Table 1.3
+            skiprows: 9
       - file_url: https://assets.publishing.service.gov.uk/media/66f53fee080bdf716392e93f/Heat_pump_deployment_quarterly_statistics_United_Kingdom_June_2024.xlsx
         page_url: https://www.gov.uk/government/statistics/heat-pump-deployment-statistics-june-2024
         release_date: "2024-09-26"
@@ -148,21 +221,153 @@ dataset:
           - https://www.theccc.org.uk/wp-content/uploads/2020/12/The-Sixth-Carbon-Budget-Dataset_v2.xlsx
         page_url: https://www.theccc.org.uk/publication/sixth-carbon-budget/#supporting-information-charts-and-data
         release_date: "2020-12-09"
+        tables:
+          - sheet_name: Buildings additional data
+            skipcols: 1
+            skiprows: 38
+          - dtypes:
+              Metric index: str
+              Scenario: str
+              Region: str
+              Sector: str
+              Amalgamation: str
+              Metric: str
+              Units: str
+              2020: float
+              2021: float
+              2022: float
+              2023: float
+              2024: float
+              2025: float
+              2026: float
+              2027: float
+              2028: float
+              2029: float
+              2030: float
+              2031: float
+              2032: float
+              2033: float
+              2034: float
+              2035: float
+              2036: float
+              2037: float
+              2038: float
+              2039: float
+              2040: float
+              2041: float
+              2042: float
+              2043: float
+              2044: float
+              2045: float
+              2046: float
+              2047: float
+              2048: float
+              2049: float
+              2050: float
+            sheet_name: Raw data
+            skipcols: 1
+            skiprows: 1
   uk_territorial_greenhouse_gas_emissions_statistics:
     collection_url: https://www.gov.uk/government/collections/uk-territorial-greenhouse-gas-emissions-statistics
     versions:
-      - file_bronze:
-          - s3://asf-mission-data-tool/bronze/uk_territorial_greenhouse_gas_emissions_statistics/2023-provisional-emissions-data-tables.xlsx
-        file_url:
+      - file_url:
           - https://assets.publishing.service.gov.uk/media/660305b1c34a860011be75f2/2023-provisional-emissions-data-tables.xlsx
         page_url: https://www.gov.uk/government/statistics/provisional-uk-greenhouse-gas-emissions-national-statistics-2023
         release_date: "2024-03-28"
-      - file_url:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/uk_territorial_greenhouse_gas_emissions_statistics/final-greenhouse-gas-emissions-tables-2022.xlsx
+          - s3://asf-mission-data-tool/bronze/uk_territorial_greenhouse_gas_emissions_statistics/final-greenhouse-gas-emissions-end-user-tables-2022.xlsx
+          - s3://asf-mission-data-tool/bronze/uk_territorial_greenhouse_gas_emissions_statistics/sic-final-greenhouse-gas-emissions-tables-2022.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/uk_territorial_greenhouse_gas_emissions_statistics/February_2024/final-greenhouse-gas-emissions-tables-2022_1_2.parquet
+          - s3://asf-mission-data-tool/silver/uk_territorial_greenhouse_gas_emissions_statistics/February_2024/final-greenhouse-gas-emissions-tables-2022_7_1.parquet
+        file_url:
           - https://assets.publishing.service.gov.uk/media/65ff114a65ca2ffef17da7a6/final-greenhouse-gas-emissions-tables-2022.xlsx
           - https://assets.publishing.service.gov.uk/media/66044b8cf9ab410011eea42d/final-greenhouse-gas-emissions-end-user-tables-2022.xlsx
           - https://assets.publishing.service.gov.uk/media/667bec4297ea0c79abfe4c72/sic-final-greenhouse-gas-emissions-tables-2022.xlsx
         page_url: https://www.gov.uk/government/statistics/final-uk-greenhouse-gas-emissions-national-statistics-1990-to-2022
         release_date: "2024-02-06"
+        tables:
+          - dtypes:
+              "1990": float
+              "1991": float
+              "1992": float
+              "1993": float
+              "1994": float
+              "1995": float
+              "1996": float
+              "1997": float
+              "1998": float
+              "1999": float
+              "2000": float
+              "2001": float
+              "2002": float
+              "2003": float
+              "2004": float
+              "2005": float
+              "2006": float
+              "2007": float
+              "2008": float
+              "2009": float
+              "2010": float
+              "2011": float
+              "2012": float
+              "2013": float
+              "2014": float
+              "2015": float
+              "2016": float
+              "2017": float
+              "2018": float
+              "2019": float
+              "2020": float
+              "2021": float
+              "2022": float
+              TES Category: str
+              TES Sector: str
+              TES Subsector: str
+            file_url: https://assets.publishing.service.gov.uk/media/65ff114a65ca2ffef17da7a6/final-greenhouse-gas-emissions-tables-2022.xlsx
+            sheet_name: "1.2"
+            skiprows: 6
+          - dtypes:
+              "1990": float
+              "1991": float
+              "1992": float
+              "1993": float
+              "1994": float
+              "1995": float
+              "1996": float
+              "1997": float
+              "1998": float
+              "1999": float
+              "2000": float
+              "2001": float
+              "2002": float
+              "2003": float
+              "2004": float
+              "2005": float
+              "2006": float
+              "2007": float
+              "2008": float
+              "2009": float
+              "2010": float
+              "2011": float
+              "2012": float
+              "2013": float
+              "2014": float
+              "2015": float
+              "2016": float
+              "2017": float
+              "2018": float
+              "2019": float
+              "2020": float
+              "2021": float
+              "2022": float
+              TES Category: str
+              TES Sector: str
+              TES Subsector: str
+            file_url: https://assets.publishing.service.gov.uk/media/66044b8cf9ab410011eea42d/final-greenhouse-gas-emissions-end-user-tables-2022.xlsx
+            sheet_name: "7.1"
+            skiprows: 6
   welsh_housing_conditions_survey:
     collection_url: https://www.gov.wales/welsh-housing-conditions-survey
     versions:

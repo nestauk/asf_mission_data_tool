@@ -4,6 +4,8 @@ import subprocess
 import toml
 import logging
 import yaml
+import io
+import pandas as pd
 from botocore.exceptions import NoCredentialsError, ClientError
 from datetime import datetime
 from typing import Callable, Any, Optional, Dict
@@ -11,6 +13,147 @@ from asf_mission_data_tool import config
 
 # Suppress information level messages from botocore
 logging.getLogger("botocore.credentials").setLevel(logging.ERROR)
+
+
+"""
+General
+"""
+
+
+def get_latest_version(dataset_name: str, filter: Optional[str] = None) -> Dict:
+    """Returns the latest version of a dataset instance from config.
+
+    Parameters
+    ----------
+    dataset_name : str
+        Name of dataset; must be a key of dataset in config/base.yaml.
+
+    filter : Optional[str], default None
+        Word to filter file URLs if only interested in gettgin the latest version of one particular category in the dataset.
+
+    Returns
+    -------
+    Dict
+        Dictionary with key-value pairs for dataset release date, file url and page url.
+    """
+    versions = config.get("dataset").get(dataset_name).get("versions")
+    if not versions:
+        raise ValueError(f"No versions found for dataset '{dataset_name}'.")
+
+    if filter:
+        filtered_versions = [
+            version
+            for version in versions
+            if any(filter in url for url in version["file_url"])
+        ]
+        if not filtered_versions:
+            raise ValueError(f"No versions found matching filter '{filter}'.")
+        latest_version = max(
+            filtered_versions,
+            key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d"),
+        )
+    else:
+        latest_version = max(
+            versions, key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d")
+        )
+    return latest_version
+
+
+def append_field_to_latest_version(
+    dataset_name: str,
+    s3_file_path: str,
+    new_field_name: str,
+    filter: Optional[str] = None,
+) -> None:
+    """Updates the base.yaml configuration file by appending a new field to the latest version entry of a specified dataset.
+    The function reads the dataset details from an existing config file, determines the latest version based on the release date and
+    updates the entry with the provided S3 file path.
+
+    Parameters
+    ----------
+    dataset_name : str
+        Name of dataset; must be a key of dataset in config/base.yaml.
+    s3_file_path : str
+        The S3 path of the silver dataset file.
+    new_field_name : str
+        The name of the new field to append to the base.yaml configuration file for the dataset of interest.
+    filter : Optional[str], optional
+        An optional filter to select specific dataset versions based on file URLs, by default None.
+    """
+
+    try:
+        # Load existing config data
+        with open("asf_mission_data_tool/config/base.yaml", "r") as file:
+            all_existing_data = yaml.safe_load(file)
+    except FileNotFoundError:
+        raise FileNotFoundError("The configuration file 'base.yaml' was not found.")
+    except yaml.YAMLError:
+        raise ValueError("Error parsing YAML file. Please check its formatting.")
+
+    # Retrieve entry for dataset
+    dataset_specific_data = all_existing_data.get("dataset", {}).get(dataset_name, {})
+    if not dataset_specific_data:
+        raise KeyError(f"Dataset '{dataset_name}' not found in config file.")
+
+    versions = dataset_specific_data.get("versions", [])
+    if not versions:
+        raise ValueError(f"No versions found for dataset '{dataset_name}'.")
+
+    # Retrieve latest version of dataset
+    if filter:
+        filtered_versions = [
+            version
+            for version in versions
+            if any(filter in url for url in version["file_url"])
+        ]
+        if not filtered_versions:
+            raise ValueError(f"No versions found matching filter '{filter}'.")
+        latest_version = max(
+            filtered_versions,
+            key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d"),
+        )
+    else:
+        latest_version = max(
+            versions, key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d")
+        )
+    latest_version[new_field_name] = s3_file_path
+
+    # Write updated data
+    with open("asf_mission_data_tool/config/base.yaml", "w") as file:
+        yaml.dump(
+            all_existing_data,
+            file,
+            default_flow_style=False,
+            sort_keys=True,
+        )
+
+    print(
+        f"{new_field_name} field added to version with release_date {latest_version['release_date']}."
+    )
+
+
+def get_from_s3(s3_key: str) -> io.BytesIO:
+    """Downloads a file from the asf-mission-data-tool S3 bucket and returns it as a BytesIO object.
+
+    Parameters
+    ----------
+    s3_file_path : str
+        The S3 key (file path) within the bucket.
+
+    Returns
+    -------
+    io.BytesIO
+        A file-like object containing the file content.
+    """
+    s3 = boto3.client("s3")
+    obj = s3.get_object(Bucket="asf-mission-data-tool", Key=s3_key)
+    content = io.BytesIO(obj["Body"].read())
+    return content
+
+
+"""
+Bronze
+"""
 
 
 def _save_provenance_to_toml(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -211,105 +354,74 @@ def save_to_s3_bronze(dataset_name: str, target_url: str) -> str:
     return f"s3://asf-mission-data-tool/{main_file_path}"
 
 
-def get_latest_version(dataset_name: str, filter: Optional[str] = None) -> Dict:
-    """Returns the latest version of a dataset instance from config.
+"""
+Silver
+"""
+
+
+def save_to_s3_silver(
+    dataframe: pd.DataFrame,
+    dataset_name: str,
+    main_file_dict: Dict,
+    subset_id: str,
+) -> str:
+    """Saves a given Pandas DataFrame to the asf_mission_data_tool S3 bucket in parquet format. The file is stored in both
+    the "LATEST" directory and a date-specific archive directory.
 
     Parameters
     ----------
+    dataframe : pd.DataFrame
+    Dataframe to be saved.
     dataset_name : str
         Name of dataset; must be a key of dataset in config/base.yaml.
-
-    filter : Optional[str], default None
-        Word to filter file URLs if only interested in gettgin the latest version of one particular category in the dataset.
+    main_file_dict : Dict
+        Dictionary containing dataset metadata from config/base.yaml.
+    subset_id : str
+        An identifier for the subset of the dataset.
 
     Returns
     -------
-    Dict
-        Dictionary with key-value pairs for dataset release date, file url and page url.
-    """
-    versions = config.get("dataset").get(dataset_name).get("versions")
-    if not versions:
-        raise ValueError(f"No versions found for dataset '{dataset_name}'.")
-
-    if filter:
-        filtered_versions = [
-            version
-            for version in versions
-            if any(filter in url for url in version["file_url"])
-        ]
-        if not filtered_versions:
-            raise ValueError(f"No versions found matching filter '{filter}'.")
-        latest_version = max(
-            filtered_versions,
-            key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d"),
-        )
-    else:
-        latest_version = max(
-            versions, key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d")
-        )
-    return latest_version
-
-
-def append_file_bronze_to_latest_version(
-    dataset_name: str,
-    s3_file_path: str,
-    filter: Optional[str] = None,
-) -> None:
-    """Updates the base.yaml configuration file by appending a "file_bronze" field to the latest version entry of a specified dataset.
-    The function reads the dataset details from an existing config file, determines the latest version based on the release date and
-    updates the entry with the provided S3 file path.
-
-    Parameters
-    ----------
-    dataset_name : str
-        Name of dataset; must be a key of dataset in config/base.yaml.
-    s3_file_path : str
-        The S3 path of the bronze dataset file.
-    filter : Optional[str], optional
-        An optional filter to select specific dataset versions based on file URLs, by default None.
+    str
+        The S3 URI of the saved parquet file
     """
 
-    try:
-        # Load existing config data
-        with open("asf_mission_data_tool/config/base.yaml", "r") as file:
-            all_existing_data = yaml.safe_load(file)
-    except FileNotFoundError:
-        raise FileNotFoundError("The configuration file 'base.yaml' was not found.")
-    except yaml.YAMLError:
-        raise ValueError("Error parsing YAML file. Please check its formatting.")
+    # Extract file information
+    file_name = main_file_dict.get("file_url")[0].split("/")[-1].rsplit(".", 1)[0]
+    archive_date = pd.to_datetime(main_file_dict.get("release_date")).strftime("%B_%Y")
 
-    # Retrieve entry for dataset
-    dataset_specific_data = all_existing_data.get("dataset", {}).get(dataset_name, {})
-    if not dataset_specific_data:
-        raise KeyError(f"Dataset '{dataset_name}' not found in config file.")
+    s3_client = boto3.client("s3")
 
-    versions = dataset_specific_data.get("versions", [])
-    if not versions:
-        raise ValueError(f"No versions found for dataset '{dataset_name}'.")
-
-    # Retrieve latest version of dataset
-    if filter:
-        filtered_versions = [
-            version
-            for version in versions
-            if any(filter in url for url in version["file_url"])
-        ]
-        if not filtered_versions:
-            raise ValueError(f"No versions found matching filter '{filter}'.")
-        latest_version = max(
-            filtered_versions,
-            key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d"),
-        )
-    else:
-        latest_version = max(
-            versions, key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d")
-        )
-    latest_version["file_bronze"] = s3_file_path
-
-    # Write updated data
-    with open("asf_mission_data_tool/config/base.yaml", "w") as file:
-        yaml.dump(all_existing_data, file, default_flow_style=False, sort_keys=True)
-
-    print(
-        f"file_bronze field added to version with release_date {latest_version['release_date']}."
+    # Save to LATEST/ and archive date/
+    latest_key = f"silver/{dataset_name}/LATEST/{file_name}_{subset_id}.parquet"
+    archive_key = (
+        f"silver/{dataset_name}/{archive_date}/{file_name}_{subset_id}.parquet"
     )
+
+    with io.BytesIO() as parquet_buffer:
+
+        dataframe.to_parquet(parquet_buffer, engine="pyarrow", index=False)
+        parquet_buffer.seek(0)
+
+        try:
+            s3_client.put_object(
+                Bucket="asf-mission-data-tool",
+                Key=latest_key,
+                Body=parquet_buffer.getvalue(),
+            )
+            print(
+                f"File uploaded successfully to s3://asf-mission-data-tool/{latest_key}"
+            )
+            s3_client.put_object(
+                Bucket="asf-mission-data-tool",
+                Key=archive_key,
+                Body=parquet_buffer.getvalue(),
+            )
+            print(
+                f"File uploaded successfully to s3://asf-mission-data-tool/{archive_key}"
+            )
+        except NoCredentialsError:
+            print("Credentials not available.")
+        except Exception as e:
+            print(f"Error uploading file: {e}")
+
+    return f"s3://asf-mission-data-tool/{archive_key}"

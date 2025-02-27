@@ -1,7 +1,7 @@
 from asf_mission_data_tool.getters.data_getters import (
     save_to_s3_bronze,
     get_latest_version,
-    append_file_bronze_to_latest_version,
+    append_field_to_latest_version,
 )
 
 dataset_name = "public_attitudes_tracking_survey"
@@ -20,6 +20,9 @@ for season in ["Summer", "Spring", "Winter"]:
         if not s3_file_path:
             pass
         else:
-            append_file_bronze_to_latest_version(
-                dataset_name=dataset_name, filter=season, s3_file_path=s3_file_path
+            append_field_to_latest_version(
+                dataset_name=dataset_name,
+                filter=season,
+                s3_file_path=s3_file_path,
+                new_field_name="file_bronze",
             )

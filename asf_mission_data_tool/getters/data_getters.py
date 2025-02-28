@@ -390,21 +390,46 @@ def save_to_s3_silver(
     archive_date = pd.to_datetime(main_file_dict.get("release_date")).strftime("%B_%Y")
 
     s3_client = boto3.client("s3")
+    bucket_name = "asf-mission-data-tool"
 
     # Save to LATEST/ and archive date/
+    latest_prefix = f"silver/{dataset_name}/LATEST/"
     latest_key = f"silver/{dataset_name}/LATEST/{file_name}_{subset_id}.parquet"
     archive_key = (
         f"silver/{dataset_name}/{archive_date}/{file_name}_{subset_id}.parquet"
     )
 
-    with io.BytesIO() as parquet_buffer:
+    try:
+        # List all files in the LATEST directory
+        existing_files = s3_client.list_objects_v2(
+            Bucket=bucket_name, Prefix=latest_prefix
+        )
 
-        dataframe.to_parquet(parquet_buffer, engine="pyarrow", index=False)
-        parquet_buffer.seek(0)
+        if "Contents" in existing_files:
+            objects_to_delete = [
+                {"Key": obj["Key"]} for obj in existing_files["Contents"]
+            ]
+            file_paths = [
+                f"s3://{bucket_name}/{obj['Key']}" for obj in existing_files["Contents"]
+            ]
 
-        try:
+            # Delete the files
+            s3_client.delete_objects(
+                Bucket=bucket_name, Delete={"Objects": objects_to_delete}
+            )
+
+            # Print the deleted file paths
+            print(f"Deleted {len(objects_to_delete)} files from {latest_prefix}:")
+            for path in file_paths:
+                print(f"  - {path}")
+
+        with io.BytesIO() as parquet_buffer:
+
+            dataframe.to_parquet(parquet_buffer, engine="pyarrow", index=False)
+            parquet_buffer.seek(0)
+
             s3_client.put_object(
-                Bucket="asf-mission-data-tool",
+                Bucket=bucket_name,
                 Key=latest_key,
                 Body=parquet_buffer.getvalue(),
             )
@@ -412,16 +437,17 @@ def save_to_s3_silver(
                 f"File uploaded successfully to s3://asf-mission-data-tool/{latest_key}"
             )
             s3_client.put_object(
-                Bucket="asf-mission-data-tool",
+                Bucket=bucket_name,
                 Key=archive_key,
                 Body=parquet_buffer.getvalue(),
             )
             print(
                 f"File uploaded successfully to s3://asf-mission-data-tool/{archive_key}"
             )
-        except NoCredentialsError:
-            print("Credentials not available.")
-        except Exception as e:
-            print(f"Error uploading file: {e}")
+    except NoCredentialsError:
+        print("Credentials not available.")
 
-    return f"s3://asf-mission-data-tool/{archive_key}"
+    except Exception as e:
+        print(f"Error uploading file: {e}")
+
+    return f"s3://{bucket_name}/{archive_key}"

@@ -7,7 +7,7 @@ import yaml
 import io
 import pandas as pd
 from botocore.exceptions import NoCredentialsError, ClientError
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from typing import Callable, Any, Optional, Dict
 from asf_mission_data_tool import config
 
@@ -366,7 +366,8 @@ def save_to_s3_silver(
     subset_id: str,
 ) -> str:
     """Saves a given Pandas DataFrame to the asf_mission_data_tool S3 bucket in parquet format. The file is stored in both
-    the "LATEST" directory and a date-specific archive directory.
+     the LATEST/ directory and a date-specific archive directory. Any existing file in LATEST/ that is older than five minutes
+     is deemed as outdated and then deleted.
 
     Parameters
     ----------
@@ -406,22 +407,29 @@ def save_to_s3_silver(
         )
 
         if "Contents" in existing_files:
-            objects_to_delete = [
-                {"Key": obj["Key"]} for obj in existing_files["Contents"]
-            ]
-            file_paths = [
-                f"s3://{bucket_name}/{obj['Key']}" for obj in existing_files["Contents"]
-            ]
+            objects_to_delete = []
+            file_paths = []
+            five_minutes_ago = datetime.now(timezone.utc) - timedelta(minutes=5)
 
-            # Delete the files
-            s3_client.delete_objects(
-                Bucket=bucket_name, Delete={"Objects": objects_to_delete}
-            )
+            for obj in existing_files["Contents"]:
+                last_modified = obj["LastModified"]
 
-            # Print the deleted file paths
-            print(f"Deleted {len(objects_to_delete)} files from {latest_prefix}:")
-            for path in file_paths:
-                print(f"  - {path}")
+                if (
+                    last_modified < five_minutes_ago
+                ):  # Only delete if file is older than five minutes
+                    objects_to_delete.append({"Key": obj["Key"]})
+                    file_paths.append(f"s3://{bucket_name}/{obj['Key']}")
+
+            if objects_to_delete:
+                s3_client.delete_objects(
+                    Bucket=bucket_name, Delete={"Objects": objects_to_delete}
+                )
+
+                print(
+                    f"Deleted {len(objects_to_delete)} outdated files from {latest_prefix}:"
+                )
+                for path in file_paths:
+                    print(f"  - {path}")
 
         with io.BytesIO() as parquet_buffer:
 
@@ -433,17 +441,13 @@ def save_to_s3_silver(
                 Key=latest_key,
                 Body=parquet_buffer.getvalue(),
             )
-            print(
-                f"File uploaded successfully to s3://asf-mission-data-tool/{latest_key}"
-            )
+            print(f"File uploaded successfully to s3://{bucket_name}/{latest_key}")
             s3_client.put_object(
                 Bucket=bucket_name,
                 Key=archive_key,
                 Body=parquet_buffer.getvalue(),
             )
-            print(
-                f"File uploaded successfully to s3://asf-mission-data-tool/{archive_key}"
-            )
+            print(f"File uploaded successfully to s3://{bucket_name}/{archive_key}")
     except NoCredentialsError:
         print("Credentials not available.")
 

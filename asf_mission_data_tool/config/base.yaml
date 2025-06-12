@@ -440,6 +440,44 @@ dataset:
     collection_url: https://www.gov.uk/government/collections/heat-pump-deployment-statistics
     versions:
       - file_bronze:
+          - s3://asf-mission-data-tool/bronze/heat_pump_deployment_quarterly_statistics/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2025_Q1.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/June_2025/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2025_Q1_Table_1_1.parquet
+          - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/June_2025/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2025_Q1_Table_1_2.parquet
+          - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/June_2025/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2025_Q1_Table_1_3.parquet
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/6839900f9c65cc8cdbae65ae/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2025_Q1.xlsx
+        page_url: https://www.gov.uk/government/statistics/heat-pump-deployment-statistics-march-2025
+        release_date: "2025-06-05"
+        tables:
+          - dtypes:
+              end_of_quarter: datetime64[ns]
+              government_scheme: str
+              installation_quarter: str
+              installations: int64
+              start_of_quarter: datetime64[ns]
+              year: Int64
+            sheet_name: Table 1.1
+            skiprows: 5
+          - dtypes:
+              end_of_quarter: datetime64[ns]
+              installation_quarter: str
+              installations: int64
+              start_of_quarter: datetime64[ns]
+              technology_type: str
+              year: Int64
+            sheet_name: Table 1.2
+            skiprows: 5
+          - dtypes:
+              end_of_quarter: datetime64[ns]
+              installation_quarter: str
+              installations: int64
+              region: str
+              start_of_quarter: datetime64[ns]
+              year: Int64
+            sheet_name: Table 1.3
+            skiprows: 9
+      - file_bronze:
           - s3://asf-mission-data-tool/bronze/heat_pump_deployment_quarterly_statistics/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q4.xlsx
         file_silver:
           - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/March_2025/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q4_Table_1_1.parquet

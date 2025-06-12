@@ -363,6 +363,7 @@ def save_to_s3_silver(
     dataframe: pd.DataFrame,
     dataset_name: str,
     main_file_dict: Dict,
+    file_url_index: int,
     subset_id: str,
 ) -> str:
     """Saves a given Pandas DataFrame to the asf_mission_data_tool S3 bucket in parquet format. The file is stored in both
@@ -377,6 +378,8 @@ def save_to_s3_silver(
         Name of dataset; must be a key of dataset in config/base.yaml.
     main_file_dict : Dict
         Dictionary containing dataset metadata from config/base.yaml.
+    file_url_index : int
+        Index of the target url in the file_url list in main_file_dict; to be used for the s3 file name.
     subset_id : str
         An identifier for the subset of the dataset.
 
@@ -387,7 +390,9 @@ def save_to_s3_silver(
     """
 
     # Extract file information
-    file_name = main_file_dict.get("file_url")[0].split("/")[-1].rsplit(".", 1)[0]
+    file_name = (
+        main_file_dict.get("file_url")[file_url_index].split("/")[-1].rsplit(".", 1)[0]
+    )
     archive_date = pd.to_datetime(main_file_dict.get("release_date")).strftime("%B_%Y")
 
     s3_client = boto3.client("s3")

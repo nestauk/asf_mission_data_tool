@@ -8,6 +8,9 @@ dataset:
           - s3://asf-mission-data-tool/bronze/energy_consumption_in_the_uk/ECUK_2024_Primary_Energy_tables.xlsx
           - s3://asf-mission-data-tool/bronze/energy_consumption_in_the_uk/ECUK_2024_End_Use_tables.xlsx
           - s3://asf-mission-data-tool/bronze/energy_consumption_in_the_uk/ECUK_2024_Electrical_Products_tables.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/energy_consumption_in_the_uk/September_2024/ECUK_2024_Consumption_tables_Table_C1.parquet
+          - s3://asf-mission-data-tool/silver/energy_consumption_in_the_uk/September_2024/ECUK_2024_Consumption_tables_Table_C9.parquet
         file_url:
           - https://assets.publishing.service.gov.uk/media/66f132604f35b65bf4cffe98/ECUK_2024_Consumption_tables.xlsx
           - https://assets.publishing.service.gov.uk/media/66f1327d02970476b261ab04/ECUK_2024_Intensity_tables.xlsx
@@ -16,6 +19,23 @@ dataset:
           - https://assets.publishing.service.gov.uk/media/66f132cec9bf1d4e84379f94/ECUK_2024_Electrical_Products_tables.xlsx
         page_url: https://www.gov.uk/government/statistics/energy-consumption-in-the-uk-2024
         release_date: "2024-09-26"
+        tables:
+          - dtypes:
+              category: str
+              energy_consumption_ktoe: float
+              sector: str
+              year: int
+            file_url: https://assets.publishing.service.gov.uk/media/66f132604f35b65bf4cffe98/ECUK_2024_Consumption_tables.xlsx
+            sheet_name: Table C1
+            skiprows: 4
+          - dtypes:
+              fuel: str
+              value: float
+              variable: str
+              year: int
+            file_url: https://assets.publishing.service.gov.uk/media/66f132604f35b65bf4cffe98/ECUK_2024_Consumption_tables.xlsx
+            sheet_name: Table C9
+            skiprows: 3
   energy_performance_of_buildings_certificates:
     collection_url: https://www.gov.uk/government/collections/energy-performance-of-buildings-certificates
     versions:
@@ -26,6 +46,13 @@ dataset:
           - s3://asf-mission-data-tool/bronze/energy_performance_of_buildings_certificates/D3-_Domestic_Properties.ods
           - s3://asf-mission-data-tool/bronze/energy_performance_of_buildings_certificates/D4A-_Domestic_Properties.ods
           - s3://asf-mission-data-tool/bronze/energy_performance_of_buildings_certificates/D4B-_Domestic_Properties.ods
+        file_silver:
+          - s3://asf-mission-data-tool/silver/energy_performance_of_buildings_certificates/January_2025/D1-_Domestic_Properties_D1_England_Only.parquet
+          - s3://asf-mission-data-tool/silver/energy_performance_of_buildings_certificates/January_2025/D1-_Domestic_Properties_D1_Wales_Only.parquet
+          - s3://asf-mission-data-tool/silver/energy_performance_of_buildings_certificates/January_2025/D2-_Domestic_Properties_D2_England_Only.parquet
+          - s3://asf-mission-data-tool/silver/energy_performance_of_buildings_certificates/January_2025/D2-_Domestic_Properties_D2_Wales_Only.parquet
+          - s3://asf-mission-data-tool/silver/energy_performance_of_buildings_certificates/January_2025/D3-_Domestic_Properties_D3_England_Only.parquet
+          - s3://asf-mission-data-tool/silver/energy_performance_of_buildings_certificates/January_2025/D3-_Domestic_Properties_D3_Wales_Only.parquet
         file_url:
           - https://assets.publishing.service.gov.uk/media/6717644696def6d27a4c9b6e/A1-_All_Properties.ods
           - https://assets.publishing.service.gov.uk/media/67176490720eec5582849bad/D1-_Domestic_Properties.ods
@@ -34,7 +61,56 @@ dataset:
           - https://assets.publishing.service.gov.uk/media/671765c4583ef2380ad99880/D4A-_Domestic_Properties.ods
           - https://assets.publishing.service.gov.uk/media/67176653d100972c0f4c9b64/D4B-_Domestic_Properties.ods
         page_url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-energy-performance-of-buildings-certificates
-        release_date: "2024-10-24"
+        release_date: "2025-01-30"
+        tables:
+          - dtypes:
+              Quarter: int64
+              Value: int64
+              Variable: str
+              Year: int64
+            file_url: https://assets.publishing.service.gov.uk/media/67176490720eec5582849bad/D1-_Domestic_Properties.ods
+            sheet_name: D1_England_Only
+            skiprows: 3
+          - dtypes:
+              Quarter: int64
+              Value: int64
+              Variable: str
+              Year: int64
+            file_url: https://assets.publishing.service.gov.uk/media/67176490720eec5582849bad/D1-_Domestic_Properties.ods
+            sheet_name: D1_Wales_Only
+            skiprows: 3
+          - dtypes:
+              Quarter: int64
+              Value: int64
+              Variable: str
+              Year: int64
+            file_url: https://assets.publishing.service.gov.uk/media/671765a99242eecc6c849bb4/D2-_Domestic_Properties.ods
+            sheet_name: D2_England_Only
+            skiprows: 3
+          - dtypes:
+              Quarter: int64
+              Value: int64
+              Variable: str
+              Year: int64
+            file_url: https://assets.publishing.service.gov.uk/media/671765a99242eecc6c849bb4/D2-_Domestic_Properties.ods
+            sheet_name: D2_Wales_Only
+            skiprows: 3
+          - dtypes:
+              Quarter: int64
+              Value: int64
+              Variable: str
+              Year: int64
+            file_url: https://assets.publishing.service.gov.uk/media/671765924a6b12291ed99875/D3-_Domestic_Properties.ods
+            sheet_name: D3_England_Only
+            skiprows: 3
+          - dtypes:
+              Quarter: int64
+              Value: int64
+              Variable: str
+              Year: int64
+            file_url: https://assets.publishing.service.gov.uk/media/671765924a6b12291ed99875/D3-_Domestic_Properties.ods
+            sheet_name: D3_Wales_Only
+            skiprows: 3
   energy_price_cap_levels:
     collection_url: https://www.ofgem.gov.uk/energy-policy-and-regulation/policy-and-regulatory-programmes/energy-price-cap-default-tariff-policy/energy-price-cap-default-tariff-levels
     versions:
@@ -48,11 +124,13 @@ dataset:
         release_date: "2024-11-22"
         tables:
           - dtypes:
-              Consumption: str
-              Fuel: str
-              Payment method: str
-              Price cap period: str
-              Tariff component: str
+              consumption: str
+              fuel: str
+              payment_method: str
+              price_cap_period: str
+              price_cap_period_end: datetime64[ns]
+              price_cap_period_start: datetime64[ns]
+              tariff_component: str
               value: float
             sheet_name: 1c Consumption adjusted levels
       - file_bronze:
@@ -65,13 +143,64 @@ dataset:
         release_date: "2025-02-25"
         tables:
           - dtypes:
-              Consumption: str
-              Fuel: str
-              Payment method: str
-              Price cap period: str
-              Tariff component: str
+              consumption: str
+              fuel: str
+              payment_method: str
+              price_cap_period: str
+              price_cap_period_end: datetime64[ns]
+              price_cap_period_start: datetime64[ns]
+              tariff_component: str
               value: float
             sheet_name: 1c Consumption adjusted levels
+  english_housing_survey:
+    collection_url: https://www.gov.uk/government/collections/english-housing-survey
+    versions:
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/english_housing_survey/2023-24_EHS_Headline_Report_Chapter_1_Housing_Quality_Annex_Tables.ods
+          - s3://asf-mission-data-tool/bronze/english_housing_survey/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables.ods
+        file_silver:
+          - s3://asf-mission-data-tool/silver/english_housing_survey/January_2025/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables_AT2_5.parquet
+          - s3://asf-mission-data-tool/silver/english_housing_survey/January_2025/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables_AT2_6.parquet
+          - s3://asf-mission-data-tool/silver/english_housing_survey/January_2025/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables_AT2_7.parquet
+          - s3://asf-mission-data-tool/silver/english_housing_survey/January_2025/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables_AT2_8.parquet
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/6799e37e9a6dc0352ab34216/2023-24_EHS_Headline_Report_Chapter_1_Housing_Quality_Annex_Tables.ods
+          - https://assets.publishing.service.gov.uk/media/6799e38c1c041dcc469dae78/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables.ods
+        page_url: https://www.gov.uk/government/statistics/annex-tables-for-english-housing-survey-2023-to-2024-headline-findings-on-housing-quality-and-energy-efficiency
+        release_date: "2025-01-30"
+        tables:
+          - dtypes:
+              main_heating_system: str
+              unit: str
+              value: float64
+              year: Int64
+            file_url: https://assets.publishing.service.gov.uk/media/6799e38c1c041dcc469dae78/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables.ods
+            sheet_name: AT2_5
+            skiprows: 4
+          - dtypes:
+              tenure: str
+              unit: str
+              value: float64
+              variable: str
+            file_url: https://assets.publishing.service.gov.uk/media/6799e38c1c041dcc469dae78/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables.ods
+            sheet_name: AT2_6
+            skiprows: 4
+          - dtypes:
+              boiler_type: str
+              unit: str
+              value: float64
+              year: Int64
+            file_url: https://assets.publishing.service.gov.uk/media/6799e38c1c041dcc469dae78/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables.ods
+            sheet_name: AT2_7
+            skiprows: 4
+          - dtypes:
+              tenure: str
+              unit: str
+              value: float64
+              variable: str
+            file_url: https://assets.publishing.service.gov.uk/media/6799e38c1c041dcc469dae78/2023-24_EHS_Headline_Report_Chapter_2_Energy_Efficiency_Annex_Tables.ods
+            sheet_name: AT2_8
+            skiprows: 4
   fuel_poverty_statistics:
     collection_url: https://www.gov.uk/government/collections/fuel-poverty-statistics
     versions:
@@ -81,6 +210,222 @@ dataset:
           - https://assets.publishing.service.gov.uk/media/65cca543130549000c8679b9/2023-fuel-poverty-detailed-tables-xls.xlsx
         page_url: https://www.gov.uk/government/statistics/fuel-poverty-detailed-tables-2024-2023-data
         release_date: "2024-02-15"
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/fuel_poverty_statistics/2024_Detailed_Tables_Final.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_1_by_all_households_and_vulnerable_households.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_2_by_quadrant_of_lileee_matrix.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_3_by_fuel_poverty_energy_efficiency_rating_fpeer.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_5_by_rurality_and_fpeer.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_6_by_region.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_7_by_dwelling_type.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_8_by_age_of_dwelling.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_9_by_floor_area.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_10_by_gas_grid_connection_and_fpeer.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_11_by_central_heating_and_fpeer.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_12_by_main_fuel_type_and_fpeer.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_13_by_central_heating_and_fuel.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_14_by_boiler_type.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_15_by_wall_insulation_and_fpeer.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_16_by_wall_type_and_gas_grid_connection.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_17_by_loft_insulation.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_18_by_renewable_heat_technology_and_fpeer.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_19_by_tenure_and_fpeer.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_20_by_housing_sector.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_24_by_household_size.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_29_by_tenure_and_vulnerability.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_31_by_income_decile_and_fpeer.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_32_by_gas_payment_method.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_33_by_electricity_payment_method.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_34_by_benefit_receipt.parquet
+          - s3://asf-mission-data-tool/silver/fuel_poverty_statistics/March_2025/2024_Detailed_Tables_Final_Table_35_by_eco4_hthg_eligibility.parquet
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/67e3cff6dcd2d93561195bdc/2024_Detailed_Tables_Final.xlsx
+        page_url: https://www.gov.uk/government/statistics/fuel-poverty-detailed-tables-2025-2024-data
+        release_date: "2025-03-27"
+        tables:
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 1
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 2
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 3
+            skiprows: 2
+          - dtypes:
+              FPEER band: str
+              Rurality: str
+              value: float64
+              variable: str
+            sheet_name: Table 5
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 6
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 7
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 8
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 9
+            skiprows: 2
+          - dtypes:
+              FPEER band: str
+              Gas grid connection: str
+              value: float64
+              variable: str
+            sheet_name: Table 10
+            skiprows: 2
+          - dtypes:
+              Central heating: str
+              FPEER band: str
+              value: float64
+              variable: str
+            sheet_name: Table 11
+            skiprows: 2
+          - dtypes:
+              FPEER band: str
+              Main fuel type: str
+              value: float64
+              variable: str
+            sheet_name: Table 12
+            skiprows: 2
+          - dtypes:
+              Central heating: str
+              Main fuel type: str
+              value: float64
+              variable: str
+            sheet_name: Table 13
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 14
+            skiprows: 2
+          - dtypes:
+              FPEER band: str
+              Wall insulation [Note B]: str
+              value: float64
+              variable: str
+            sheet_name: Table 15
+            skiprows: 2
+          - dtypes:
+              Gas grid connection: str
+              Wall type: str
+              value: float64
+              variable: str
+            sheet_name: Table 16
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 17
+            skiprows: 2
+          - dtypes:
+              FPEER band: str
+              Renewable heat technology: str
+              value: float64
+              variable: str
+            sheet_name: Table 18
+            skiprows: 2
+          - dtypes:
+              FPEER band: str
+              Tenure [Note A]: str
+              value: float64
+              variable: str
+            sheet_name: Table 19
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 20
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 24
+            skiprows: 2
+          - dtypes:
+              Tenure: str
+              Vulnerability: str
+              value: float64
+              variable: str
+            sheet_name: Table 29
+            skiprows: 2
+          - dtypes:
+              After Housing Costs (AHC) equivalised income decile group: str
+              FPEER band: str
+              value: float64
+              variable: str
+            sheet_name: Table 31
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 32
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 33
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 34
+            skiprows: 2
+          - dtypes:
+              category: str
+              group: str
+              value: float64
+              variable: str
+            sheet_name: Table 35
+            skiprows: 2
   future_energy_scenarios:
     collection_url: https://www.neso.energy/publications/future-energy-scenarios-fes
     versions:
@@ -95,6 +440,44 @@ dataset:
     collection_url: https://www.gov.uk/government/collections/heat-pump-deployment-statistics
     versions:
       - file_bronze:
+          - s3://asf-mission-data-tool/bronze/heat_pump_deployment_quarterly_statistics/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q4.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/March_2025/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q4_Table_1_1.parquet
+          - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/March_2025/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q4_Table_1_2.parquet
+          - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/March_2025/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q4_Table_1_3.parquet
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/67c7427a68a61757838d22ce/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q4.xlsx
+        page_url: https://www.gov.uk/government/statistics/heat-pump-deployment-statistics-december-2024
+        release_date: "2025-03-06"
+        tables:
+          - dtypes:
+              end_of_quarter: datetime64[ns]
+              government_scheme: str
+              installation_quarter: str
+              installations: int64
+              start_of_quarter: datetime64[ns]
+              year: Int64
+            sheet_name: Table 1.1
+            skiprows: 5
+          - dtypes:
+              end_of_quarter: datetime64[ns]
+              installation_quarter: str
+              installations: int64
+              start_of_quarter: datetime64[ns]
+              technology_type: str
+              year: Int64
+            sheet_name: Table 1.2
+            skiprows: 5
+          - dtypes:
+              end_of_quarter: datetime64[ns]
+              installation_quarter: str
+              installations: int64
+              region: str
+              start_of_quarter: datetime64[ns]
+              year: Int64
+            sheet_name: Table 1.3
+            skiprows: 9
+      - file_bronze:
           - s3://asf-mission-data-tool/bronze/heat_pump_deployment_quarterly_statistics/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q3.xlsx
         file_silver:
           - s3://asf-mission-data-tool/silver/heat_pump_deployment_quarterly_statistics/December_2024/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2024_Q3_Table_1_1.parquet
@@ -106,43 +489,30 @@ dataset:
         release_date: "2024-12-05"
         tables:
           - dtypes:
-              All schemes: int
-              Boiler Upgrade Scheme[Note 5]: int
-              Domestic Renewable Heat Incentive[note 11]: int
-              Energy Company Obligation[Note 10]: int
-              Green Homes Grant Voucher Scheme[Note 8]: int
-              Home Upgrade Grant[Note 6]: int
-              Installation quarter [note 4]: str
-              Local Authority Delivery[note 7]: int
-              Non-Domestic Renewable Heat Incentive[Note 12]: int
-              Social Housing Decarbonisation Fund[Note 9]: int
+              end_of_quarter: datetime64[ns]
+              government_scheme: str
+              installation_quarter: str
+              installations: int64
+              start_of_quarter: datetime64[ns]
+              year: Int64
             sheet_name: Table 1.1
             skiprows: 5
           - dtypes:
-              Air source heat pumps [note 13]: int
-              All technologies: int
-              Ground/water source heat pumps [note 13]: int
-              Installation quarter [note 4]: str
-              Unknown technology [note 14]: int
+              end_of_quarter: datetime64[ns]
+              installation_quarter: str
+              installations: int64
+              start_of_quarter: datetime64[ns]
+              technology_type: str
+              year: Int64
             sheet_name: Table 1.2
             skiprows: 5
           - dtypes:
-              East: int
-              East Midlands: int
-              England: int
-              England and Wales: int
-              Installation quarter [note 4]: str
-              London: int
-              North East: int
-              North West: int
-              Northern Ireland: int
-              Scotland: int
-              South East: int
-              South West: int
-              United Kingdom: int
-              Wales: int
-              West Midlands: int
-              Yorkshire and The Humber: int
+              end_of_quarter: datetime64[ns]
+              installation_quarter: str
+              installations: int64
+              region: str
+              start_of_quarter: datetime64[ns]
+              year: Int64
             sheet_name: Table 1.3
             skiprows: 9
       - file_url: https://assets.publishing.service.gov.uk/media/66f53fee080bdf716392e93f/Heat_pump_deployment_quarterly_statistics_United_Kingdom_June_2024.xlsx
@@ -163,19 +533,41 @@ dataset:
       - file_bronze:
           - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT_Summer_2024_Time_Series.xlsx
           - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT_Summer_2024_Crosstabulations.xlsx
+        file_silver: s3://asf-mission-data-tool/silver/public_attitudes_tracking_survey/October_2024/DESNZ_PAT_Summer_2024_Time_Series_all_questions.parquet
         file_url:
           - https://assets.publishing.service.gov.uk/media/671a182f593bb124be9c13dc/DESNZ_PAT_Summer_2024_Time_Series.xlsx
           - https://assets.publishing.service.gov.uk/media/671a181a593bb124be9c13db/DESNZ_PAT_Summer_2024_Crosstabulations.xlsx
         page_url: https://www.gov.uk/government/statistics/desnz-public-attitudes-tracker-summer-2024
         release_date: "2024-10-29"
+        tables:
+          - dtypes:
+              question: str
+              season_end_date: datetime64[ns]
+              season_start_date: datetime64[ns]
+              value: float64
+              variable: str
+              variable_type: str
+              wave_season: str
+              wave_year: int64
       - file_bronze:
           - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT_Spring_2024_Time_series.xlsx
           - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT__Spring_2024__Crosstabulations.xlsx
+        file_silver: s3://asf-mission-data-tool/silver/public_attitudes_tracking_survey/July_2024/DESNZ_PAT_Spring_2024_Time_series_all_questions.parquet
         file_url:
           - https://assets.publishing.service.gov.uk/media/6682749697ea0c79abfe4dc0/DESNZ_PAT_Spring_2024_Time_series.xlsx
           - https://assets.publishing.service.gov.uk/media/668274ab7d26b2be17a4b4c1/DESNZ_PAT__Spring_2024__Crosstabulations.xlsx
         page_url: https://www.gov.uk/government/statistics/desnz-public-attitudes-tracker-spring-2024
         release_date: "2024-07-03"
+        tables:
+          - dtypes:
+              question: str
+              season_end_date: datetime64[ns]
+              season_start_date: datetime64[ns]
+              value: float64
+              variable: str
+              variable_type: str
+              wave_season: str
+              wave_year: int64
       - file_bronze:
           - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker_Winter_2023_Time_Series.xlsx
           - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker_Winter_2023_Crosstabulations__Revised_July_2024_.xlsx
@@ -184,6 +576,35 @@ dataset:
           - https://assets.publishing.service.gov.uk/media/66829a4e7d26b2be17a4b4f2/DESNZ_Public_Attitudes_Tracker_Winter_2023_Crosstabulations__Revised_July_2024_.xlsx
         page_url: https://www.gov.uk/government/statistics/desnz-public-attitudes-tracker-winter-2023
         release_date: "2024-03-07"
+        tables:
+          - dtypes:
+              question: str
+              season_end_date: datetime64[ns]
+              season_start_date: datetime64[ns]
+              value: float64
+              variable: str
+              variable_type: str
+              wave_season: str
+              wave_year: int64
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker__Winter_2024__Time_Series.xlsx
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker__Winter_2024__Crosstabulations.xlsx
+        file_silver: s3://asf-mission-data-tool/silver/public_attitudes_tracking_survey/March_2025/DESNZ_Public_Attitudes_Tracker__Winter_2024__Time_Series_all_questions.parquet
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/67d04bad472ec44ed2307842/DESNZ_Public_Attitudes_Tracker__Winter_2024__Time_Series.xlsx
+          - https://assets.publishing.service.gov.uk/media/67d04bc8ad017430364eef04/DESNZ_Public_Attitudes_Tracker__Winter_2024__Crosstabulations.xlsx
+        page_url: https://www.gov.uk/government/statistics/desnz-public-attitudes-tracker-winter-2024
+        release_date: "2025-03-13"
+        tables:
+          - dtypes:
+              question: str
+              season_end_date: datetime64[ns]
+              season_start_date: datetime64[ns]
+              value: float64
+              variable: str
+              variable_type: str
+              wave_season: str
+              wave_year: int64
   scottish_house_condition_survey:
     collection_url: https://www.gov.scot/collections/scottish-house-condition-survey/
     versions:
@@ -208,72 +629,141 @@ dataset:
     versions:
       - file_bronze:
           - s3://asf-mission-data-tool/bronze/seventh_carbon_budget/The-Seventh-Carbon-Budget-full-dataset.xlsx
+          - s3://asf-mission-data-tool/bronze/seventh_carbon_budget/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/seventh_carbon_budget/February_2025/The-Seventh-Carbon-Budget-full-dataset_Economy_wide_data.parquet
+          - s3://asf-mission-data-tool/silver/seventh_carbon_budget/February_2025/The-Seventh-Carbon-Budget-full-dataset_Sector_level_data.parquet
+          - s3://asf-mission-data-tool/silver/seventh_carbon_budget/February_2025/The-Seventh-Carbon-Budget-full-dataset_Subsector_level_data.parquet
+          - s3://asf-mission-data-tool/silver/seventh_carbon_budget/February_2025/The-Seventh-Carbon-Budget-full-dataset_Measure_level_data.parquet
+          - s3://asf-mission-data-tool/silver/seventh_carbon_budget/February_2025/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report_3_5.parquet
+          - s3://asf-mission-data-tool/silver/seventh_carbon_budget/February_2025/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report_7_2_1.parquet
+          - s3://asf-mission-data-tool/silver/seventh_carbon_budget/February_2025/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report_7_2_4.parquet
+          - s3://asf-mission-data-tool/silver/seventh_carbon_budget/February_2025/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report_7_2_2.parquet
         file_url:
           - https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-full-dataset.xlsx
+          - https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report.xlsx
         page_url: https://www.theccc.org.uk/publication/the-seventh-carbon-budget/#publication-downloads
         release_date: "2025-02-26"
-  sixth_carbon_budget:
-    collection_url: https://www.theccc.org.uk/publication/sixth-carbon-budget/
-    versions:
-      - file_bronze:
-          - s3://asf-mission-data-tool/bronze/sixth_carbon_budget/The-Sixth-Carbon-Budget-Dataset_v2.xlsx
-        file_url:
-          - https://www.theccc.org.uk/wp-content/uploads/2020/12/The-Sixth-Carbon-Budget-Dataset_v2.xlsx
-        page_url: https://www.theccc.org.uk/publication/sixth-carbon-budget/#supporting-information-charts-and-data
-        release_date: "2020-12-09"
         tables:
-          - sheet_name: Buildings additional data
-            skipcols: 1
-            skiprows: 38
           - dtypes:
-              Metric index: str
-              Scenario: str
-              Region: str
-              Sector: str
-              Amalgamation: str
-              Metric: str
-              Units: str
-              2020: float
-              2021: float
-              2022: float
-              2023: float
-              2024: float
-              2025: float
-              2026: float
-              2027: float
-              2028: float
-              2029: float
-              2030: float
-              2031: float
-              2032: float
-              2033: float
-              2034: float
-              2035: float
-              2036: float
-              2037: float
-              2038: float
-              2039: float
-              2040: float
-              2041: float
-              2042: float
-              2043: float
-              2044: float
-              2045: float
-              2046: float
-              2047: float
-              2048: float
-              2049: float
-              2050: float
-            sheet_name: Raw data
-            skipcols: 1
-            skiprows: 1
+              country: str
+              scenario: str
+              value: float
+              variable: str
+              variable_unit: str
+              year: int
+            file_url: https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-full-dataset.xlsx
+            sheet_name: Economy-wide data
+          - dtypes:
+              country: str
+              scenario: str
+              sector: str
+              value: float
+              variable: str
+              variable_unit: str
+              year: int
+            file_url: https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-full-dataset.xlsx
+            sheet_name: Sector-level data
+          - dtypes:
+              country: str
+              scenario: str
+              sector: str
+              subsector: str
+              value: float
+              variable: str
+              variable_unit: str
+              year: int
+            file_url: https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-full-dataset.xlsx
+            sheet_name: Subsector-level data
+          - dtypes:
+              category3: str
+              category4: str
+              category5: str
+              category6: str
+              category7: str
+              country: str
+              measure_name: str
+              scenario: str
+              sector: str
+              subsector: str
+              value: float
+              variable: str
+              variable_unit: str
+              year: int
+            file_url: https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-full-dataset.xlsx
+            sheet_name: Measure-level data
+          - dtypes:
+              Category: str
+              Pathway: str
+              Series: str
+              Value: float64
+              Year: int64
+            file_url: https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report.xlsx
+            sheet_name: "3.5"
+            skipcols: 10
+            skiprows: 10
+          - dtypes:
+              Emissions (MtCO2e): float64
+              Series: str
+              Subsector: str
+              Year: int64
+            file_url: https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report.xlsx
+            sheet_name: 7.2.1
+            skipcols: 10
+            skiprows: 10
+          - dtypes:
+              Name: str
+              Series: str
+              Unit: str
+              Value: float64
+              Year: int64
+            file_url: https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report.xlsx
+            sheet_name: 7.2.4
+            skiprows: 12
+          - dtypes:
+              Category: str
+              Pathway: str
+              Value: float64
+              Year: int64
+            file_url: https://www.theccc.org.uk/wp-content/uploads/2025/02/The-Seventh-Carbon-Budget-Charts-and-data-in-the-report.xlsx
+            sheet_name: 7.2.2
+            skipcols: 10
+            skiprows: 10
   uk_territorial_greenhouse_gas_emissions_statistics:
     collection_url: https://www.gov.uk/government/collections/uk-territorial-greenhouse-gas-emissions-statistics
     versions:
-      - file_url:
-          - https://assets.publishing.service.gov.uk/media/660305b1c34a860011be75f2/2023-provisional-emissions-data-tables.xlsx
-        page_url: https://www.gov.uk/government/statistics/provisional-uk-greenhouse-gas-emissions-national-statistics-2023
-        release_date: "2024-03-28"
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/uk_territorial_greenhouse_gas_emissions_statistics/final-greenhouse-gas-emissions-tables-2023.xlsx
+          - s3://asf-mission-data-tool/bronze/uk_territorial_greenhouse_gas_emissions_statistics/final-greenhouse-gas-emissions-end-user-tables-2023.xlsx
+        file_silver:
+          - s3://asf-mission-data-tool/silver/uk_territorial_greenhouse_gas_emissions_statistics/February_2025/final-greenhouse-gas-emissions-tables-2023_1_2.parquet
+          - s3://asf-mission-data-tool/silver/uk_territorial_greenhouse_gas_emissions_statistics/February_2025/final-greenhouse-gas-emissions-end-user-tables-2023_7_1.parquet
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/67a379ffb74b3d9dfe36ca9e/final-greenhouse-gas-emissions-tables-2023.xlsx
+          - https://assets.publishing.service.gov.uk/media/67e3e5688ca840c1439a72ea/final-greenhouse-gas-emissions-end-user-tables-2023.xlsx
+        page_url: https://www.gov.uk/government/statistics/final-uk-greenhouse-gas-emissions-statistics-1990-to-2023
+        release_date: "2025-02-06"
+        tables:
+          - dtypes:
+              territorial_greenhouse_gas_emissions: float
+              tes_category: str
+              tes_sector: str
+              tes_subsector: str
+              unit: str
+              year: int64
+            file_url: https://assets.publishing.service.gov.uk/media/67a379ffb74b3d9dfe36ca9e/final-greenhouse-gas-emissions-tables-2023.xlsx
+            sheet_name: "1.2"
+            skiprows: 5
+          - dtypes:
+              territorial_greenhouse_gas_emissions: float
+              tes_category: str
+              tes_sector: str
+              tes_subsector: str
+              unit: str
+              year: int64
+            file_url: https://assets.publishing.service.gov.uk/media/67e3e5688ca840c1439a72ea/final-greenhouse-gas-emissions-end-user-tables-2023.xlsx
+            sheet_name: "7.1"
+            skiprows: 6
       - file_bronze:
           - s3://asf-mission-data-tool/bronze/uk_territorial_greenhouse_gas_emissions_statistics/final-greenhouse-gas-emissions-tables-2022.xlsx
           - s3://asf-mission-data-tool/bronze/uk_territorial_greenhouse_gas_emissions_statistics/final-greenhouse-gas-emissions-end-user-tables-2022.xlsx
@@ -289,82 +779,22 @@ dataset:
         release_date: "2024-02-06"
         tables:
           - dtypes:
-              "1990": float
-              "1991": float
-              "1992": float
-              "1993": float
-              "1994": float
-              "1995": float
-              "1996": float
-              "1997": float
-              "1998": float
-              "1999": float
-              "2000": float
-              "2001": float
-              "2002": float
-              "2003": float
-              "2004": float
-              "2005": float
-              "2006": float
-              "2007": float
-              "2008": float
-              "2009": float
-              "2010": float
-              "2011": float
-              "2012": float
-              "2013": float
-              "2014": float
-              "2015": float
-              "2016": float
-              "2017": float
-              "2018": float
-              "2019": float
-              "2020": float
-              "2021": float
-              "2022": float
-              TES Category: str
-              TES Sector: str
-              TES Subsector: str
+              territorial_greenhouse_gas_emissions: float
+              tes_category: str
+              tes_sector: str
+              tes_subsector: str
+              unit: str
+              year: int64
             file_url: https://assets.publishing.service.gov.uk/media/65ff114a65ca2ffef17da7a6/final-greenhouse-gas-emissions-tables-2022.xlsx
             sheet_name: "1.2"
             skiprows: 6
           - dtypes:
-              "1990": float
-              "1991": float
-              "1992": float
-              "1993": float
-              "1994": float
-              "1995": float
-              "1996": float
-              "1997": float
-              "1998": float
-              "1999": float
-              "2000": float
-              "2001": float
-              "2002": float
-              "2003": float
-              "2004": float
-              "2005": float
-              "2006": float
-              "2007": float
-              "2008": float
-              "2009": float
-              "2010": float
-              "2011": float
-              "2012": float
-              "2013": float
-              "2014": float
-              "2015": float
-              "2016": float
-              "2017": float
-              "2018": float
-              "2019": float
-              "2020": float
-              "2021": float
-              "2022": float
-              TES Category: str
-              TES Sector: str
-              TES Subsector: str
+              territorial_greenhouse_gas_emissions: float
+              tes_category: str
+              tes_sector: str
+              tes_subsector: str
+              unit: str
+              year: int64
             file_url: https://assets.publishing.service.gov.uk/media/66044b8cf9ab410011eea42d/final-greenhouse-gas-emissions-end-user-tables-2022.xlsx
             sheet_name: "7.1"
             skiprows: 6

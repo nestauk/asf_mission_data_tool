@@ -569,6 +569,25 @@ dataset:
     collection_url: https://www.gov.uk/government/collections/public-attitudes-tracking-survey
     versions:
       - file_bronze:
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker_-_Time_series__Spring_2025__UK.xlsx
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker-_Crosstabulations__Spring_2025__UK.xlsx
+        file_silver: s3://asf-mission-data-tool/silver/public_attitudes_tracking_survey/July_2025/DESNZ_Public_Attitudes_Tracker_-_Time_series__Spring_2025__UK_all_questions.parquet
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/686298ea08bf2f5376121a26/DESNZ_Public_Attitudes_Tracker_-_Time_series__Spring_2025__UK.xlsx
+          - https://assets.publishing.service.gov.uk/media/68629a37b466cce1bb121a34/DESNZ_Public_Attitudes_Tracker-_Crosstabulations__Spring_2025__UK.xlsx
+        page_url: https://www.gov.uk/government/statistics/desnz-public-attitudes-tracker-spring-2025
+        release_date: "2025-07-03"
+        tables:
+          - dtypes:
+              question: str
+              season_end_date: datetime64[ns]
+              season_start_date: datetime64[ns]
+              value: float64
+              variable: str
+              variable_type: str
+              wave_season: str
+              wave_year: int64
+      - file_bronze:
           - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT_Summer_2024_Time_Series.xlsx
           - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_PAT_Summer_2024_Crosstabulations.xlsx
         file_silver: s3://asf-mission-data-tool/silver/public_attitudes_tracking_survey/October_2024/DESNZ_PAT_Summer_2024_Time_Series_all_questions.parquet

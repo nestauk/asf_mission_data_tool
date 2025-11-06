@@ -129,53 +129,63 @@ def add_new_version(
     if not versions:
         raise ValueError(f"No versions found for dataset '{dataset_name}'.")
 
-    # Retrieve latest version of dataset to copy schema
-    if filter:
-        filtered_versions = [
-            version
-            for version in versions
-            if any(filter in url for url in version["file_url"])
-        ]
-        if not filtered_versions:
-            raise ValueError(f"No versions found matching filter '{filter}'.")
-        latest_version = max(
-            filtered_versions,
-            key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d"),
+    # check if fetched version already exists in config
+    version_dates = []
+    for version in versions:
+        version_dates.append(version["release_date"])
+
+    if release_date in version_dates:
+        print(
+            f"Dataset version {release_date} of {dataset_name} already exists in config."
         )
     else:
-        latest_version = max(
-            versions, key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d")
+        # Retrieve latest version of dataset to copy schema
+        if filter:
+            filtered_versions = [
+                version
+                for version in versions
+                if any(filter in url for url in version["file_url"])
+            ]
+            if not filtered_versions:
+                raise ValueError(f"No versions found matching filter '{filter}'.")
+            latest_version = max(
+                filtered_versions,
+                key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d"),
+            )
+        else:
+            latest_version = max(
+                versions, key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d")
+            )
+
+        # Create dictionary for new version to add to config
+        new_version = {
+            "page_url": page_url,
+            "file_url": file_url,
+            "release_date": release_date,
+            "tables": deepcopy(
+                latest_version["tables"]
+            ),  # assume same structure as previous release
+        }
+
+        # Add to full dataset dictionary
+        dataset_specific_data["versions"].append(new_version)
+
+        # Write updated config
+        # with open("asf_mission_data_tool/config/base.yaml", "w") as file:
+        with open(
+            "/home/eglucas/Projects/asf_mission_data_tool/asf_mission_data_tool/config/base.yaml",
+            "w",
+        ) as file:
+            yaml.dump(
+                all_existing_data,
+                file,
+                default_flow_style=False,
+                sort_keys=True,
+            )
+
+        print(
+            f"New version added to dataset {dataset_name} with release_date {release_date}."
         )
-
-    # Create dictionary for new version to add to config
-    new_version = {
-        "page_url": page_url,
-        "file_url": file_url,
-        "release_date": release_date,
-        "tables": deepcopy(
-            latest_version["tables"]
-        ),  # assume same structure as previous release
-    }
-
-    # Add to full dataset dictionary
-    dataset_specific_data["versions"].append(new_version)
-
-    # Write updated config
-    # with open("asf_mission_data_tool/config/base.yaml", "w") as file:
-    with open(
-        "/home/eglucas/Projects/asf_mission_data_tool/asf_mission_data_tool/config/base.yaml",
-        "w",
-    ) as file:
-        yaml.dump(
-            all_existing_data,
-            file,
-            default_flow_style=False,
-            sort_keys=True,
-        )
-
-    print(
-        f"New version added to dataset {dataset_name} with release_date {release_date}."
-    )
 
 
 def get_latest_version(dataset_name: str, filter: Optional[str] = None) -> Dict:

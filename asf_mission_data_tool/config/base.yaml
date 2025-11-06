@@ -556,6 +556,38 @@ dataset:
       - file_url: https://assets.publishing.service.gov.uk/media/66f53fee080bdf716392e93f/Heat_pump_deployment_quarterly_statistics_United_Kingdom_June_2024.xlsx
         page_url: https://www.gov.uk/government/statistics/heat-pump-deployment-statistics-june-2024
         release_date: "2024-09-26"
+      - file_url:
+          - https://assets.publishing.service.gov.uk/media/68b5c751536d629f9c82a983/Heat_pump_deployment_quarterly_statistics_United_Kingdom_2025_Q2.xlsx
+        page_url: https://www.gov.uk/government/statistics/heat-pump-deployment-statistics-june-2025
+        release_date: "2025-09-04"
+        tables:
+          - dtypes:
+              end_of_quarter: datetime64[ns]
+              government_scheme: str
+              installation_quarter: str
+              installations: int64
+              start_of_quarter: datetime64[ns]
+              year: Int64
+            sheet_name: Table 1.1
+            skiprows: 5
+          - dtypes:
+              end_of_quarter: datetime64[ns]
+              installation_quarter: str
+              installations: int64
+              start_of_quarter: datetime64[ns]
+              technology_type: str
+              year: Int64
+            sheet_name: Table 1.2
+            skiprows: 5
+          - dtypes:
+              end_of_quarter: datetime64[ns]
+              installation_quarter: str
+              installations: int64
+              region: str
+              start_of_quarter: datetime64[ns]
+              year: Int64
+            sheet_name: Table 1.3
+            skiprows: 9
   northern_ireland_statistics_and_research_agency_census:
     collection_url: https://www.nisra.gov.uk/statistics/census
     versions:

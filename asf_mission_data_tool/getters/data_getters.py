@@ -6,8 +6,10 @@ import logging
 import yaml
 import io
 import pandas as pd
+from copy import deepcopy
 from botocore.exceptions import NoCredentialsError, ClientError
 from datetime import datetime, timezone, timedelta
+from bs4 import BeautifulSoup
 from typing import Callable, Any, Optional, Dict
 from asf_mission_data_tool import config
 
@@ -18,6 +20,162 @@ logging.getLogger("botocore.credentials").setLevel(logging.ERROR)
 """
 General
 """
+
+
+def get_page_url(dataset_name: str, page_link_text: str) -> str:
+
+    # Retrieve collection page
+    collection_url = config.get("dataset").get(dataset_name).get("collection_url")
+    collection_response = requests.get(collection_url)
+
+    collection_response.raise_for_status()
+    if collection_response.status_code != 200:
+        raise ValueError(
+            f"Failed to fetch the collection page: {collection_response.status_code}"
+        )
+
+    collection_soup = BeautifulSoup(collection_response.content, "html.parser")
+
+    # Find link to most recent release page
+    page_url = None
+    for a_tag in collection_soup.find_all("a", href=True):
+        if page_link_text in a_tag.text:
+            page_url = "https://www.gov.uk" + a_tag["href"]
+            break  # first one is most recent one
+
+    if not page_url:
+        raise ValueError(f"Could not find the {page_link_text} link")
+
+    return page_url
+
+
+def get_file_url(page_url: str, file_type: str, file_text: str) -> list[str]:
+
+    # Retrieve most recent release page
+    page_response = requests.get(page_url)
+
+    page_response.raise_for_status()
+    if page_response.status_code != 200:
+        raise ValueError(f"Failed to fetch the page page: {page_response.status_code}")
+
+    page_soup = BeautifulSoup(page_response.content, "html.parser")
+
+    # Find links to files on most recent release page
+    file_url = []  # some datasets have multiple files
+    for a_tag in page_soup.find_all("a", href=True):
+        href = a_tag["href"]
+        if href.endswith(file_type) and href.startswith("http") and file_text in href:
+            file_url.append(href)
+
+    file_url = list(dict.fromkeys(file_url))  # remove duplicates
+
+    if not file_url:
+        raise ValueError(
+            f"Could not find the file link, check the link text {file_text} and file type {file_type}"
+        )
+
+    return file_url
+
+
+def get_release_date(page_url: str) -> str:
+    # Retrieve most recent release page
+    page_response = requests.get(page_url)
+
+    page_response.raise_for_status()
+    if page_response.status_code != 200:
+        raise ValueError(f"Failed to fetch the page page: {page_response.status_code}")
+
+    page_soup = BeautifulSoup(page_response.content, "html.parser")
+
+    # Extract release date
+    published_dt = page_soup.find("dt", string="Published")
+    if published_dt:
+        published_dd = published_dt.find_next("dd")
+        if published_dd:
+            published_date = published_dd.get_text(strip=True)
+
+    release_date = datetime.strptime(published_date, "%d %B %Y").strftime("%Y-%m-%d")
+
+    return release_date
+
+
+def add_new_version(
+    dataset_name: str,
+    page_url: str,
+    file_url: list[str],
+    release_date: str,
+    filter: Optional[str] = None,
+) -> None:
+
+    # Load existing config data
+    try:
+        # with open("asf_mission_data_tool/config/base.yaml", "r") as file:
+        with open(
+            "/home/eglucas/Projects/asf_mission_data_tool/asf_mission_data_tool/config/base.yaml",
+            "r",
+        ) as file:
+            all_existing_data = yaml.safe_load(file)
+    except FileNotFoundError:
+        raise FileNotFoundError("The configuration file 'base.yaml' was not found.")
+    except yaml.YAMLError:
+        raise ValueError("Error parsing YAML file. Please check its formatting.")
+
+    # Retrieve entry for dataset
+    dataset_specific_data = all_existing_data.get("dataset", {}).get(dataset_name, {})
+    if not dataset_specific_data:
+        raise KeyError(f"Dataset '{dataset_name}' not found in config file.")
+
+    versions = dataset_specific_data.get("versions", [])
+    if not versions:
+        raise ValueError(f"No versions found for dataset '{dataset_name}'.")
+
+    # Retrieve latest version of dataset to copy schema
+    if filter:
+        filtered_versions = [
+            version
+            for version in versions
+            if any(filter in url for url in version["file_url"])
+        ]
+        if not filtered_versions:
+            raise ValueError(f"No versions found matching filter '{filter}'.")
+        latest_version = max(
+            filtered_versions,
+            key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d"),
+        )
+    else:
+        latest_version = max(
+            versions, key=lambda x: datetime.strptime(x["release_date"], "%Y-%m-%d")
+        )
+
+    # Create dictionary for new version to add to config
+    new_version = {
+        "page_url": page_url,
+        "file_url": file_url,
+        "release_date": release_date,
+        "tables": deepcopy(
+            latest_version["tables"]
+        ),  # assume same structure as previous release
+    }
+
+    # Add to full dataset dictionary
+    dataset_specific_data["versions"].append(new_version)
+
+    # Write updated config
+    # with open("asf_mission_data_tool/config/base.yaml", "w") as file:
+    with open(
+        "/home/eglucas/Projects/asf_mission_data_tool/asf_mission_data_tool/config/base.yaml",
+        "w",
+    ) as file:
+        yaml.dump(
+            all_existing_data,
+            file,
+            default_flow_style=False,
+            sort_keys=True,
+        )
+
+    print(
+        f"New version added to dataset {dataset_name} with release_date {release_date}."
+    )
 
 
 def get_latest_version(dataset_name: str, filter: Optional[str] = None) -> Dict:

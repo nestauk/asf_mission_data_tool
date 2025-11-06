@@ -694,6 +694,25 @@ dataset:
               variable_type: str
               wave_season: str
               wave_year: int64
+      - file_bronze:
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker_-_Time_series__Summer_2025__UK.xlsx
+          - s3://asf-mission-data-tool/bronze/public_attitudes_tracking_survey/DESNZ_Public_Attitudes_Tracker_-_Crosstabulations__Summer_2025__UK.xlsx
+        file_silver: s3://asf-mission-data-tool/silver/public_attitudes_tracking_survey/October_2025/DESNZ_Public_Attitudes_Tracker_-_Time_series__Summer_2025__UK_all_questions.parquet
+        file_url:
+          - https://assets.publishing.service.gov.uk/media/68fa3e9b30c331c88be6f044/DESNZ_Public_Attitudes_Tracker_-_Time_series__Summer_2025__UK.xlsx
+          - https://assets.publishing.service.gov.uk/media/68fa3e8830c331c88be6f043/DESNZ_Public_Attitudes_Tracker_-_Crosstabulations__Summer_2025__UK.xlsx
+        page_url: https://www.gov.uk/government/statistics/desnz-public-attitudes-tracker-summer-2025
+        release_date: "2025-10-28"
+        tables:
+          - dtypes:
+              question: str
+              season_end_date: datetime64[ns]
+              season_start_date: datetime64[ns]
+              value: float64
+              variable: str
+              variable_type: str
+              wave_season: str
+              wave_year: int64
   scottish_house_condition_survey:
     collection_url: https://www.gov.scot/collections/scottish-house-condition-survey/
     versions:

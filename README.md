@@ -1,5 +1,12 @@
 # asf_mission_data_tool
 
+# ⚠️ This Repository is No Longer Maintained
+
+This project has been replaced by **[asf_mission_data]([https://github.com/user/new-repo](https://github.com/nestauk/asf_mission_data))**. 
+
+Please head over there for the latest updates, issues, and pull requests. 
+This repository is kept here for historical reference only.
+
 ## Setup
 
 - Meet the data science cookiecutter [requirements](http://nestauk.github.io/ds-cookiecutter/quickstart), in brief:
